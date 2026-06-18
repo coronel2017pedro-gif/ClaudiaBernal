@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claudia Bernal Inmobiliaria — Sistema Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.4.0/dist/tabler-icons.min.css">
+<style>
+/* ── RESET & ROOT ── */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C9A84C;--gold-lt:rgba(201,168,76,.14);--gold-md:rgba(201,168,76,.28);
+  --dark:#0f0f0f;--dark2:#181818;--dark3:#222;--dark4:#2a2a2a;
+  --tp:#f0ece4;--ts:#a09880;--tm:#6b6558;--tx:#3a332a;
+  --bg:#f5f3ef;--card:#fff;--border:#e8e4de;
+  --t1:#1a1918;--t2:#5a534a;--t3:#9c9488;
+  --green:#22c55e;--red:#ef4444;--blue:#3b82f6;
+  --r:8px;--r-lg:14px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;font-weight:300;background:var(--dark);color:var(--tp);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--gold-lt)}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:#3a3530;border-radius:2px}
+a{text-decoration:none;color:inherit}
+
+/* ── VIEWS ── */
+#v-web{background:var(--dark);color:var(--tp);display:block}
+#v-crm{display:none;background:var(--bg);color:var(--t1)}
+.view-open{display:flex!important;flex-direction:column}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:16px 0;transition:all .4s}
+.nav.s{background:rgba(10,9,8,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:.5px solid rgba(255,255,255,.07);padding:11px 0}
+.nav-in{max-width:1240px;margin:0 auto;padding:0 28px;display:flex;align-items:center;gap:16px}
+.logo strong{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;letter-spacing:-.01em;color:var(--tp)}
+.logo span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.24em;color:var(--gold);margin-top:1px}
+.nav-links{display:flex;gap:26px;margin-left:28px}
+.nav-links a{font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:var(--ts);cursor:pointer;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-r{display:flex;gap:8px;align-items:center;margin-left:auto}
+.nbtn{font-size:11px;padding:8px 15px;cursor:pointer;border:none;letter-spacing:.08em;text-transform:uppercase;transition:all .2s;font-family:'DM Sans',sans-serif;border-radius:3px}
+.nbtn-gold{background:var(--gold);color:var(--dark)}
+.nbtn-gold:hover{background:#b08a38}
+.nbtn-ghost{background:transparent;border:.5px solid rgba(255,255,255,.15);color:var(--ts)}
+.nbtn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.nbtn-crm{background:var(--gold-lt);border:.5px solid var(--gold-md);color:var(--gold)}
+.nbtn-crm:hover{background:var(--gold-md)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:100px 28px 60px}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 15% 50%,rgba(201,168,76,.09),transparent),radial-gradient(ellipse 50% 40% at 85% 20%,rgba(201,168,76,.05),transparent);pointer-events:none}
+.hero-in{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1fr 430px;gap:72px;align-items:center;position:relative}
+.hero-eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.28em;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.hero-eyebrow::before{content:'';width:28px;height:.5px;background:var(--gold);display:block}
+.hero h1{font-family:'Playfair Display',serif;font-size:58px;font-weight:600;line-height:1.06;color:var(--tp);letter-spacing:-.02em}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero-sub{font-size:14px;color:var(--ts);line-height:1.85;margin:22px 0 34px;max-width:500px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.cta-p{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--dark);font-size:11px;font-weight:500;padding:14px 26px;text-transform:uppercase;letter-spacing:.12em;cursor:pointer;border:none;transition:all .22s;font-family:'DM Sans',sans-serif;border-radius:3px}
+.cta-p:hover{background:#b08a38;transform:translateY(-1px)}
+.cta-s{display:inline-flex;align-items:center;gap:8px;border:.5px solid rgba(201,168,76,.4);color:var(--gold);font-size:11px;padding:14px 24px;text-transform:uppercase;letter-spacing:.12em;cursor:pointer;background:transparent;transition:all .22s;font-family:'DM Sans',sans-serif;border-radius:3px}
+.cta-s:hover{border-color:var(--gold);background:var(--gold-lt)}
+.hero-stats{display:flex;gap:40px;margin-top:56px;padding-top:40px;border-top:.5px solid rgba(255,255,255,.07)}
+.hs-val{font-family:'Playfair Display',serif;font-size:34px;font-weight:600;color:var(--gold);line-height:1}
+.hs-lbl{font-size:10px;color:var(--tm);text-transform:uppercase;letter-spacing:.14em;margin-top:5px}
+
+/* Hero cards */
+.hero-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-self:center}
+.hc{padding:20px;border:.5px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);cursor:pointer;transition:all .3s;border-radius:var(--r)}
+.hc:hover{border-color:var(--gold-md);background:var(--gold-lt);transform:translateY(-2px)}
+.hc-ico{font-size:26px;margin-bottom:12px}
+.hc h3{font-family:'Playfair Display',serif;font-size:14px;font-weight:500;color:var(--tp);margin-bottom:4px}
+.hc p{font-size:11px;color:var(--tm)}
+
+/* ── BARRA BÚSQUEDA ── */
+.srch-bar{background:var(--dark2);border-bottom:.5px solid rgba(255,255,255,.06);padding:15px 28px;position:sticky;top:60px;z-index:100}
+.srch-in{max-width:1240px;margin:0 auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.si{flex:1;min-width:130px;background:rgba(255,255,255,.055);border:.5px solid rgba(255,255,255,.1);color:var(--tp);padding:10px 13px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;border-radius:3px;transition:border-color .2s}
+.si:focus{border-color:var(--gold-md)}
+.si::placeholder{color:var(--tm)}
+.si option{background:var(--dark2)}
+.sb{background:var(--gold);color:var(--dark);border:none;padding:10px 20px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;border-radius:3px;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.rc{font-size:11px;color:var(--tm);margin-left:auto;white-space:nowrap}
+.s-add{display:none;background:rgba(201,168,76,.12);border:.5px solid var(--gold-md);color:var(--gold);font-size:11px;padding:9px 15px;cursor:pointer;border-radius:3px;font-family:'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:.08em;align-items:center;gap:5px}
+.admin-active .s-add{display:inline-flex}
+
+/* ── GRID ── */
+.sec{max-width:1240px;margin:0 auto;padding:56px 28px}
+.sl{font-size:10px;text-transform:uppercase;letter-spacing:.26em;color:var(--gold)}
+.gl{width:40px;height:.5px;background:var(--gold);margin:10px 0 26px}
+.st{font-family:'Playfair Display',serif;font-size:36px;font-weight:600;margin-bottom:28px;color:var(--tp)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(316px,1fr));gap:20px}
+
+/* ── CARD ── */
+.card{background:var(--dark2);border:.5px solid rgba(255,255,255,.07);overflow:hidden;cursor:pointer;transition:all .35s;position:relative;border-radius:var(--r)}
+.card:hover{border-color:var(--gold-md);transform:translateY(-4px);box-shadow:0 20px 48px rgba(0,0,0,.45)}
+.card-img{height:215px;position:relative;overflow:hidden;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:52px}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.card:hover .card-img img{transform:scale(1.05)}
+.tag{position:absolute;top:11px;left:11px;font-size:9px;text-transform:uppercase;letter-spacing:.14em;padding:3px 10px;font-weight:500;border-radius:2px}
+.tv{background:rgba(37,99,235,.22);color:#93c5fd;border:.5px solid rgba(37,99,235,.35)}
+.tr{background:rgba(16,185,129,.2);color:#6ee7b7;border:.5px solid rgba(16,185,129,.3)}
+.tt{background:rgba(245,158,11,.2);color:#fcd34d;border:.5px solid rgba(245,158,11,.3)}
+.tc{background:rgba(244,63,94,.2);color:#fca5a5;border:.5px solid rgba(244,63,94,.3)}
+.tag-dest{position:absolute;top:11px;right:11px;background:rgba(201,168,76,.88);color:var(--dark);font-size:9px;padding:3px 10px;font-weight:500;border-radius:2px}
+.card-body{padding:18px 20px}
+.ct{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:var(--gold);margin-bottom:5px}
+.cn{font-family:'Playfair Display',serif;font-size:17px;font-weight:500;line-height:1.3;transition:color .2s}
+.card:hover .cn{color:var(--gold)}
+.cloc{font-size:11px;color:var(--tm);margin-top:4px;display:flex;align-items:center;gap:3px}
+.cp{font-family:'Playfair Display',serif;font-size:21px;color:var(--gold);margin:11px 0 9px;font-weight:600}
+.cs{display:flex;gap:14px;font-size:11px;color:var(--ts);border-top:.5px solid rgba(255,255,255,.05);padding-top:10px}
+.card-acts{display:flex;gap:7px;padding:13px 20px;border-top:.5px solid rgba(255,255,255,.05)}
+.ca-wa{flex:1;background:rgba(37,211,102,.1);border:.5px solid rgba(37,211,102,.25);color:#4ade80;font-size:11px;padding:9px;text-align:center;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px;border-radius:3px}
+.ca-wa:hover{background:rgba(37,211,102,.2)}
+.ca-d{flex:1;border:.5px solid rgba(255,255,255,.1);color:var(--ts);font-size:11px;padding:9px;text-align:center;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px;border-radius:3px}
+.ca-d:hover{border-color:var(--gold-md);color:var(--gold)}
+/* Admin overlay */
+.adm-ov{display:none;position:absolute;inset:0;background:rgba(0,0,0,.75);z-index:5;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:var(--r)}
+.admin-active .adm-ov{display:flex}
+.adm-btn{background:var(--gold);color:var(--dark);border:none;padding:10px 22px;font-size:12px;font-weight:500;cursor:pointer;width:156px;display:flex;align-items:center;justify-content:center;gap:6px;border-radius:3px;font-family:'DM Sans',sans-serif}
+.adm-btn.del{background:#ef4444;color:#fff}
+
+/* ── DETALLE ── */
+.det-bg{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.88);overflow-y:auto;padding:20px}
+.det-bg.open{display:block}
+.det-box{max-width:960px;margin:0 auto;background:var(--dark2);border:.5px solid rgba(255,255,255,.09);position:relative;border-radius:var(--r-lg)}
+.det-x{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.07);border:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ts);z-index:10;transition:all .2s}
+.det-x:hover{background:rgba(255,255,255,.14);color:var(--tp)}
+.det-gal{height:350px;position:relative;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:72px;overflow:hidden;border-radius:var(--r-lg) var(--r-lg) 0 0}
+.det-gal img{width:100%;height:100%;object-fit:cover}
+.det-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);border:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;transition:all .2s}
+.det-nav:hover{background:rgba(201,168,76,.75)}
+.det-nav.l{left:12px}.det-nav.r{right:12px}
+.det-grid{display:grid;grid-template-columns:1fr 280px}
+.det-l{padding:28px 32px}
+.det-r{padding:24px 22px;border-left:.5px solid rgba(255,255,255,.07);background:rgba(0,0,0,.12);border-radius:0 0 var(--r-lg) 0}
+.dtt{font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:var(--gold);margin-bottom:7px}
+.dt{font-family:'Playfair Display',serif;font-size:26px;font-weight:600;line-height:1.2;margin-bottom:7px;color:var(--tp)}
+.dl{font-size:12px;color:var(--ts);margin-bottom:16px;display:flex;align-items:center;gap:5px}
+.dp{font-family:'Playfair Display',serif;font-size:30px;color:var(--gold);font-weight:600;margin-bottom:20px}
+.dsg{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:22px}
+.dsp{background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.07);padding:11px;text-align:center;border-radius:var(--r)}
+.dsp-v{font-size:17px;font-weight:500;color:var(--tp)}
+.dsp-l{font-size:10px;color:var(--tm);margin-top:2px}
+.dd{font-size:13px;color:var(--ts);line-height:1.9;margin-bottom:18px}
+.dam{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.dat{background:var(--gold-lt);border:.5px solid var(--gold-md);padding:4px 11px;font-size:11px;color:var(--ts);border-radius:2px}
+.df h3{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:4px;color:var(--tp)}
+.df p{font-size:11px;color:var(--tm);margin-bottom:14px}
+.di{width:100%;background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.1);color:var(--tp);padding:10px 12px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:8px;transition:border-color .2s;border-radius:4px}
+.di:focus{border-color:var(--gold-md)}
+.di::placeholder{color:var(--tm)}
+.dsub{width:100%;background:var(--gold);color:var(--dark);border:none;padding:12px;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;margin-bottom:9px;border-radius:4px;font-family:'DM Sans',sans-serif}
+.dwa{width:100%;background:rgba(37,211,102,.1);border:.5px solid rgba(37,211,102,.25);color:#4ade80;padding:11px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;border-radius:4px;transition:all .2s}
+.dwa:hover{background:rgba(37,211,102,.2)}
+
+/* ── CTA ── */
+.cta-sec{background:radial-gradient(ellipse at 50% 100%,rgba(201,168,76,.09),transparent 65%),var(--dark);padding:80px 28px;text-align:center;border-top:.5px solid rgba(255,255,255,.05)}
+.cta-sec h2{font-family:'Playfair Display',serif;font-size:42px;font-weight:600;margin-bottom:14px;color:var(--tp)}
+.cta-sec p{font-size:14px;color:var(--ts);max-width:470px;margin:0 auto 32px;line-height:1.8}
+
+/* ── FOOTER ── */
+footer{background:#09080a;border-top:.5px solid rgba(255,255,255,.05);padding:40px 28px;color:var(--tp)}
+.foot{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:44px}
+.fb strong{font-family:'Playfair Display',serif;font-size:18px}
+.fb span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.22em;color:var(--gold);margin-top:2px}
+.fb p{font-size:12px;color:var(--tm);margin-top:12px;line-height:1.8}
+.fc h4{font-size:10px;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);margin-bottom:14px}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.fc li{font-size:12px;color:var(--ts);cursor:pointer;transition:color .2s}
+.fc li:hover{color:var(--gold)}
+.fbot{max-width:1240px;margin:22px auto 0;padding-top:20px;border-top:.5px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;font-size:11px;color:var(--tm)}
+
+/* ── ADMIN PANEL ── */
+.adm-bg{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.93);overflow-y:auto;padding:24px}
+.adm-bg.open{display:block}
+.adm-box{max-width:840px;margin:0 auto;color:var(--tp)}
+.adm-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.adm-hdr h2{font-family:'Playfair Display',serif;font-size:24px;font-weight:500}
+.adm-close{background:rgba(255,255,255,.07);border:.5px solid rgba(255,255,255,.12);color:var(--ts);padding:8px 16px;font-size:11px;cursor:pointer;display:flex;align-items:center;gap:5px;border-radius:4px;font-family:'DM Sans',sans-serif}
+.adm-tabs{display:flex;gap:0;margin-bottom:22px;border:.5px solid rgba(255,255,255,.12);overflow:hidden;border-radius:4px}
+.atab{padding:9px 20px;font-size:11px;cursor:pointer;color:var(--ts);transition:all .2s;text-transform:uppercase;letter-spacing:.08em;flex:1;text-align:center;border-right:.5px solid rgba(255,255,255,.08);background:transparent}
+.atab:last-child{border-right:none}
+.atab.on{background:var(--gold);color:var(--dark);font-weight:500}
+.asec{display:none}.asec.on{display:block}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg{display:flex;flex-direction:column;gap:4px}.fg.fc2{grid-column:1/-1}
+.flbl{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--tm)}
+.fi,.fsel,.fta{width:100%;background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.1);color:var(--tp);padding:9px 11px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;border-radius:4px}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--gold-md)}
+.fi::placeholder,.fta::placeholder{color:var(--tm)}
+.fsel option{background:var(--dark2)}
+.fta{resize:vertical;min-height:68px}
+.fchks{display:flex;flex-wrap:wrap;gap:10px}
+.fchk{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--ts);cursor:pointer}
+.fchk input{accent-color:var(--gold)}
+.uz{border:1.5px dashed rgba(255,255,255,.12);padding:20px;text-align:center;cursor:pointer;transition:all .2s;border-radius:var(--r);margin-top:6px}
+.uz:hover{border-color:var(--gold-md);background:var(--gold-lt)}
+.uz p{font-size:11px;color:var(--tm);margin-top:5px}
+.fp-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.fp-t{position:relative;width:70px;height:52px;overflow:hidden;border-radius:4px;background:var(--dark3)}
+.fp-t img{width:100%;height:100%;object-fit:cover}
+.fp-del{position:absolute;top:1px;right:1px;background:rgba(239,68,68,.9);color:#fff;border:none;width:16px;height:16px;font-size:9px;cursor:pointer;border-radius:2px;display:flex;align-items:center;justify-content:center}
+.f-acts{display:flex;gap:8px;margin-top:18px;justify-content:flex-end}
+.fsave{background:var(--gold);color:var(--dark);border:none;padding:11px 24px;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;border-radius:3px;font-family:'DM Sans',sans-serif}
+.fcanc{background:transparent;border:.5px solid rgba(255,255,255,.13);color:var(--ts);padding:11px 18px;font-size:12px;cursor:pointer;border-radius:3px;font-family:'DM Sans',sans-serif}
+/* Admin lista */
+.adm-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:.5px solid rgba(255,255,255,.06)}
+.adm-row:last-child{border-bottom:none}
+.ar-ico{font-size:20px;width:30px;text-align:center;flex-shrink:0}
+.ar-info{flex:1;min-width:0}
+.ar-info h4{font-size:12px;font-weight:500;color:var(--tp);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ar-info p{font-size:10px;color:var(--tm)}
+.ar-price{font-size:13px;color:var(--gold);white-space:nowrap;flex-shrink:0;font-family:'Playfair Display',serif}
+.pill{font-size:9px;padding:2px 8px;border-radius:20px;flex-shrink:0}
+.pill-on{background:rgba(34,197,94,.12);color:#4ade80;border:.5px solid rgba(34,197,94,.25)}
+.pill-off{background:rgba(255,255,255,.06);color:var(--ts);border:.5px solid rgba(255,255,255,.1)}
+.ar-btn{background:var(--gold);color:var(--dark);border:none;padding:6px 12px;font-size:10px;font-weight:500;cursor:pointer;border-radius:3px;display:flex;align-items:center;gap:4px;flex-shrink:0;font-family:'DM Sans',sans-serif}
+.ar-btn.del{background:rgba(239,68,68,.15);color:#f87171;border:.5px solid rgba(239,68,68,.25)}
+
+/* ── CRM ── */
+.crm-top{height:58px;background:var(--card);border-bottom:.5px solid var(--border);display:flex;align-items:center;padding:0 22px;gap:14px;position:sticky;top:0;z-index:100}
+.crm-top h3{font-size:15px;font-weight:600;color:var(--t1)}
+.crm-top-r{margin-left:auto;display:flex;gap:8px;align-items:center}
+.crm-exit{font-size:11px;color:var(--t3);cursor:pointer;padding:6px 12px;border:.5px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;background:transparent}
+.crm-exit:hover{color:var(--t1);border-color:var(--t2)}
+.crm-wrap{display:flex;flex:1;min-height:calc(100vh - 58px)}
+.crm-side{width:214px;background:#191917;flex-shrink:0;display:flex;flex-direction:column}
+.crm-logo{padding:18px 16px;border-bottom:.5px solid rgba(255,255,255,.07)}
+.crm-logo strong{display:block;color:#fff;font-family:'Playfair Display',serif;font-size:14px;font-weight:600}
+.crm-logo span{font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:var(--gold)}
+.crm-nav{flex:1;padding:10px 8px;overflow-y:auto}
+.cni{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:7px;cursor:pointer;color:rgba(255,255,255,.38);font-size:12px;transition:all .15s;border:none;background:transparent;width:100%;text-align:left;font-family:'DM Sans',sans-serif}
+.cni:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.72)}
+.cni.on{background:rgba(201,168,76,.14);color:var(--gold);font-weight:500}
+.cni i{font-size:16px;flex-shrink:0}
+.crm-back{margin-top:auto;padding:12px 8px;border-top:.5px solid rgba(255,255,255,.07)}
+.crm-main{flex:1;overflow-y:auto;padding:26px;background:var(--bg)}
+.cs{display:none}.cs.on{display:block}
+.cs-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:10px;flex-wrap:wrap}
+.cs-hdr h2{font-size:20px;font-weight:600;color:var(--t1)}
+.cs-hdr p{font-size:12px;color:var(--t3);margin-top:2px}
+.c-btn{display:inline-flex;align-items:center;gap:5px;padding:8px 15px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:none;transition:all .15s;font-family:'DM Sans',sans-serif}
+.c-btn-p{background:var(--gold);color:var(--dark)}
+.c-btn-p:hover{background:#b08a38}
+.c-btn-s{background:var(--card);border:.5px solid var(--border);color:var(--t2)}
+.c-btn-s:hover{border-color:var(--gold);color:#8a6a2a}
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.kpi{background:var(--card);border:.5px solid var(--border);border-radius:10px;padding:14px}
+.kpi-i{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:10px}
+.kb{background:#dbeafe;color:#2563eb}.ka{background:#fef3c7;color:#d97706}
+.kg{background:#dcfce7;color:#16a34a}.kr{background:#ffe4e6;color:#e11d48}
+.kv{font-size:24px;font-weight:700;color:var(--t1)}
+.kl{font-size:11px;color:var(--t3);margin-top:2px}
+.ks{font-size:10px;margin-top:3px}
+.ks.up{color:#16a34a}
+/* Pipeline */
+.pipe-wrap{background:var(--card);border:.5px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px}
+.pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pcol{background:#faf9f7;border:.5px solid var(--border);border-radius:10px;padding:10px;min-height:120px}
+.phdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding-bottom:6px;border-bottom:.5px solid var(--border);font-size:11px;font-weight:600;color:var(--t1)}
+.pd{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px}
+.pc-n{font-size:10px;color:var(--t3);background:var(--bg);padding:1px 7px;border-radius:20px}
+.lc{background:var(--card);border:.5px solid var(--border);border-radius:7px;padding:8px 10px;margin-bottom:6px}
+.lc:hover{border-color:rgba(201,168,76,.4)}
+.ln{font-size:11px;font-weight:600;color:var(--t1)}
+.lp{font-size:10px;color:var(--t3);margin-top:1px}
+/* Tabla */
+.tbl{background:var(--card);border:.5px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px}
+.tbl table{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{background:#faf9f7;padding:8px 12px;text-align:left;font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;border-bottom:.5px solid var(--border)}
+.tbl td{padding:9px 12px;border-bottom:.5px solid #f5f2ef;color:var(--t1);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#faf9f7}
+.sc{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:11px;background:var(--card)}
+.sc.done{background:#dcfce7;border-color:#86efac;color:#16a34a}
+.sc:hover:not(.done){border-color:var(--gold);color:#b08a38}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:500}
+.b-gr{background:#dcfce7;color:#166534}.b-am{background:#fef3c7;color:#92400e}
+.b-bl{background:#dbeafe;color:#1e40af}.b-go{background:#fdf8ec;color:#8a6a2a;border:.5px solid rgba(201,168,76,.3)}
+.b-gy{background:#f1f5f9;color:#64748b}
+/* Inmuebles CRM */
+.inm-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:.5px solid var(--border);background:var(--card)}
+.inm-row:last-child{border-bottom:none}
+.inm-row:hover{background:#faf9f7}
+.inm-ico{width:40px;height:40px;border-radius:8px;background:#fdf8ec;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.inm-inf{flex:1;min-width:0}
+.inm-inf h4{font-size:12px;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inm-inf p{font-size:10px;color:var(--t3);margin-top:1px}
+.inm-p{font-size:13px;font-weight:600;color:#8a6a2a;flex-shrink:0;white-space:nowrap;font-family:'Playfair Display',serif}
+.tog{width:28px;height:28px;border-radius:50%;border:.5px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;transition:all .2s;flex-shrink:0}
+.tog:hover{border-color:var(--gold)}
+.tog.on-e{background:#dcfce7;border-color:#86efac;color:#16a34a}
+.tog.on-s{background:#fef3c7;border-color:#fcd34d;color:#d97706}
+.ia{width:26px;height:26px;border-radius:6px;border:.5px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;color:var(--t3);flex-shrink:0}
+.ia:hover{background:var(--gold);border-color:var(--gold);color:var(--dark)}
+/* Bot */
+.bot-wr{display:grid;grid-template-columns:200px 1fr;height:500px;background:var(--card);border:.5px solid var(--border);border-radius:10px;overflow:hidden}
+.bot-side{background:#faf9f7;border-right:.5px solid var(--border);overflow-y:auto}
+.bot-sh{padding:12px;border-bottom:.5px solid var(--border);font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.1em}
+.ci{padding:10px 12px;border-bottom:.5px solid #f0ede8;cursor:pointer;transition:background .12s}
+.ci:hover,.ci.on{background:var(--card)}
+.ci.on{border-left:2px solid var(--gold)}
+.cin{font-size:12px;font-weight:600;color:var(--t1)}
+.cil{font-size:10px;color:var(--t3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cich{font-size:9px;font-weight:500;margin-top:3px}
+.ch-wa{color:#16a34a}.ch-ml{color:#2563eb}.ch-wb{color:#7c3aed}
+.bot-m{display:flex;flex-direction:column}
+.bot-h{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:.5px solid var(--border)}
+.bot-h h4{font-size:13px;font-weight:600;color:var(--t1)}
+.bot-h p{font-size:10px;color:var(--t3)}
+.bot-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.bm{display:flex;gap:7px;max-width:80%}
+.bm.me{align-self:flex-end;flex-direction:row-reverse}
+.bav{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:2px}
+.bav.b{background:#fdf8ec;border:.5px solid rgba(201,168,76,.25);color:#8a6a2a}
+.bav.u{background:#f0ede8;color:var(--t2)}
+.bb{padding:8px 11px;border-radius:9px;font-size:11px;line-height:1.55}
+.bm.bot .bb{background:#f0ede8;color:var(--t1)}
+.bm.me .bb{background:#fdf8ec;border:.5px solid rgba(201,168,76,.2);color:var(--t1)}
+.bt2{font-size:9px;color:var(--t3);margin-top:3px;padding:0 3px}
+.bot-ir{display:flex;border-top:.5px solid var(--border)}
+.bot-inp{flex:1;background:transparent;border:none;color:var(--t1);padding:10px 12px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none}
+.bot-inp::placeholder{color:var(--t3)}
+.bot-sb{background:var(--gold);border:none;padding:10px 14px;color:var(--dark);cursor:pointer;font-size:13px}
+/* Funnel */
+.fbr{margin-bottom:10px}
+.fbh{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px}
+.fbb{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.fbf{height:100%;border-radius:3px;transition:width .8s}
+/* CRM funnel bars small */
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.stat-c{background:var(--card);border:.5px solid var(--border);border-radius:10px;padding:14px}
+.stat-c h4{font-size:12px;font-weight:600;color:var(--t1);margin-bottom:12px}
+/* Modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex}
+.modal{background:var(--card);border-radius:14px;padding:22px;width:380px;max-width:100%;max-height:90vh;overflow-y:auto;border:.5px solid var(--border)}
+.modal h3{font-size:16px;font-weight:600;margin-bottom:16px;color:var(--t1);display:flex;align-items:center;gap:8px}
+.mlbl{font-size:11px;color:var(--t2);display:block;margin-bottom:3px;margin-top:10px;font-weight:500}
+.minp,.msel,.mta{width:100%;padding:8px 10px;border:.5px solid var(--border);border-radius:7px;font-size:12px;background:#faf9f7;color:var(--t1);outline:none;font-family:'DM Sans',sans-serif}
+.mta{min-height:56px;resize:vertical}
+.m-acts{display:flex;gap:8px;margin-top:16px;justify-content:flex-end}
+.m-save{background:var(--gold);color:var(--dark);border:none;border-radius:7px;padding:9px 18px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
+.m-canc{background:var(--card);border:.5px solid var(--border);border-radius:7px;padding:9px 14px;font-size:12px;color:var(--t2);cursor:pointer;font-family:'DM Sans',sans-serif}
+
+/* ── CHAT FAB ── */
+.cfab{position:fixed;bottom:24px;right:24px;z-index:250;width:52px;height:52px;background:var(--gold);border:none;cursor:pointer;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 26px rgba(201,168,76,.36);transition:all .22s}
+.cfab:hover{background:#b08a38;transform:scale(1.06)}
+.cwin{display:none;position:fixed;bottom:86px;right:24px;z-index:250;width:316px;background:var(--dark2);border:.5px solid rgba(255,255,255,.1);box-shadow:0 20px 52px rgba(0,0,0,.56);border-radius:var(--r-lg);flex-direction:column;overflow:hidden}
+.cwin.open{display:flex}
+.cwh{background:var(--dark3);padding:13px 15px;display:flex;align-items:center;justify-content:space-between;border-bottom:.5px solid rgba(255,255,255,.06)}
+.cwav{width:30px;height:30px;background:var(--gold-lt);border:.5px solid var(--gold-md);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.cwh h4{font-size:12px;font-weight:500;color:var(--tp);margin-left:9px}
+.cwh p{font-size:9px;color:var(--ts);margin-left:9px;display:flex;align-items:center;gap:3px}
+.cw-x{background:none;border:none;color:var(--ts);cursor:pointer;font-size:15px;line-height:1}
+.cwm{height:220px;overflow-y:auto;padding:11px;display:flex;flex-direction:column;gap:7px}
+.cm{max-width:84%}
+.cm.b{align-self:flex-start}.cm.u{align-self:flex-end}
+.cmb{padding:7px 10px;font-size:12px;line-height:1.5;border-radius:9px}
+.cm.b .cmb{background:rgba(255,255,255,.055);border:.5px solid rgba(255,255,255,.06);color:var(--tp)}
+.cm.u .cmb{background:var(--gold-lt);border:.5px solid var(--gold-md);color:var(--tp)}
+.cmt{font-size:9px;color:var(--tm);margin-top:2px;padding:0 2px}
+.cwi-row{display:flex;border-top:.5px solid rgba(255,255,255,.06)}
+.cwi{flex:1;background:transparent;border:none;color:var(--tp);padding:10px 12px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none}
+.cwi::placeholder{color:var(--tm)}
+.cws{background:var(--gold);border:none;padding:10px 14px;cursor:pointer;color:var(--dark);font-size:13px}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--dark2);border:.5px solid var(--gold-md);color:var(--tp);padding:9px 20px;font-size:12px;opacity:0;transition:opacity .3s;z-index:999;pointer-events:none;border-radius:6px;white-space:nowrap}
+.toast.show{opacity:1}
+
+/* TYPING */
+@keyframes td{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
+.typing span{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--t3);animation:td .9s infinite;margin-right:3px}
+.typing span:nth-child(2){animation-delay:.18s}
+.typing span:nth-child(3){animation-delay:.36s}
+
+@media(max-width:860px){
+  .hero-in,.det-grid,.foot{grid-template-columns:1fr}
+  .hero-cards,.crm-side,.dsg{display:none}
+  .hero h1{font-size:36px}
+  .kpis{grid-template-columns:1fr 1fr}
+  .pipe{grid-template-columns:1fr 1fr}
+  .fgrid{grid-template-columns:1fr}
+  .bot-wr{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════
+     WEB PÚBLICA
+════════════════════════════════════════════════════ -->
+<div id="v-web">
+
+<nav class="nav" id="nav">
+  <div class="nav-in">
+    <div class="logo"><strong>Claudia Bernal</strong><span>Inmobiliaria · León, Gto.</span></div>
+    <div class="nav-links">
+      <a onclick="gsc('s-props')">Propiedades</a>
+      <a onclick="filtrar('casa_venta')">En venta</a>
+      <a onclick="filtrar('casa_renta')">En renta</a>
+      <a onclick="gsc('s-cta')">Contacto</a>
+    </div>
+    <div class="nav-r">
+      <button class="nbtn nbtn-ghost" id="btn-adm" onclick="toggleAdm()"><i class="ti ti-settings" aria-hidden="true"></i> Admin</button>
+      <button class="nbtn nbtn-crm" onclick="irCRM()"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> CRM</button>
+      <a href="https://wa.me/524771234567" target="_blank" class="nbtn nbtn-gold"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i> WhatsApp</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="s-inicio">
+  <div class="hero-in">
+    <div>
+      <div class="hero-eyebrow">León, Guanajuato · México</div>
+      <h1>Tu propiedad<br><em>ideal</em> en León</h1>
+      <p class="hero-sub">Casas, departamentos, terrenos y locales comerciales. Asesoría profesional y acompañamiento en cada etapa de tu inversión.</p>
+      <div class="hero-ctas">
+        <button class="cta-p" onclick="gsc('s-props')"><i class="ti ti-building-estate" aria-hidden="true"></i> Ver propiedades</button>
+        <a href="https://wa.me/524771234567" target="_blank" class="cta-s"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i> Hablar ahora</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="hs-val" id="stat-n">—</div><div class="hs-lbl">Propiedades activas</div></div>
+        <div><div class="hs-val">15+</div><div class="hs-lbl">Años de experiencia</div></div>
+        <div><div class="hs-val">98%</div><div class="hs-lbl">Clientes satisfechos</div></div>
+      </div>
+    </div>
+    <div class="hero-cards">
+      <div class="hc" onclick="filtrar('casa_venta')"><div class="hc-ico">🏡</div><h3>Casa en venta</h3><p>Desde $900K MXN</p></div>
+      <div class="hc" onclick="filtrar('casa_renta')"><div class="hc-ico">🏠</div><h3>Casa en renta</h3><p>Desde $6,500/mes</p></div>
+      <div class="hc" onclick="filtrar('terreno')"><div class="hc-ico">🌿</div><h3>Terrenos</h3><p>Todas las zonas</p></div>
+      <div class="hc" onclick="filtrar('local_comercial')"><div class="hc-ico">🏪</div><h3>Comercial</h3><p>Ubicaciones prime</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- BARRA BÚSQUEDA -->
+<div class="srch-bar" id="s-props">
+  <div class="srch-in" id="srch-in">
+    <input class="si" id="q" placeholder="Buscar por nombre, colonia..." oninput="buscar()">
+    <select class="si" id="ft" onchange="buscar()">
+      <option value="">Todos los tipos</option>
+      <option value="casa_venta">Casa en venta</option>
+      <option value="casa_renta">Casa en renta</option>
+      <option value="terreno">Terreno</option>
+      <option value="local_comercial">Local comercial</option>
+    </select>
+    <select class="si" id="fp" onchange="buscar()">
+      <option value="">Cualquier precio</option>
+      <option value="0-1000000">Hasta $1M</option>
+      <option value="1000000-2000000">$1M – $2M</option>
+      <option value="2000000-3500000">$2M – $3.5M</option>
+      <option value="3500000-9999999">Más de $3.5M</option>
+    </select>
+    <select class="si" id="fr" onchange="buscar()">
+      <option value="">Recámaras</option>
+      <option value="1">1+</option><option value="2">2+</option>
+      <option value="3">3+</option><option value="4">4+</option>
+    </select>
+    <button class="sb" onclick="buscar()"><i class="ti ti-search" aria-hidden="true"></i> Buscar</button>
+    <button class="s-add" onclick="abrirFormNuevo()"><i class="ti ti-plus" aria-hidden="true"></i> Agregar</button>
+    <span class="rc" id="rc"></span>
+  </div>
+</div>
+
+<!-- GRID -->
+<div style="background:var(--dark);padding-bottom:64px">
+  <div class="sec">
+    <div class="sl">Catálogo completo</div>
+    <div class="gl"></div>
+    <div class="st">Propiedades disponibles</div>
+    <div class="grid" id="grid"></div>
+    <div id="empty" style="display:none;text-align:center;padding:52px 0;color:var(--tp)">
+      <div style="font-size:44px;opacity:.28;margin-bottom:14px">🏚️</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:8px">Sin resultados</h3>
+      <p style="font-size:13px;color:var(--ts);margin-bottom:18px">Prueba con otros filtros.</p>
+      <button class="cta-s" onclick="limpiar()">Ver todas</button>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-sec" id="s-cta">
+  <div class="sl">¿Lista para encontrar tu propiedad?</div>
+  <div class="gl" style="margin:12px auto 0"></div>
+  <h2 style="margin-top:20px">Hablemos hoy</h2>
+  <p>Sin compromiso ni costo. Cuéntanos qué buscas y te ayudamos a encontrarlo.</p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+    <a href="https://wa.me/524771234567?text=Hola%2C%20me%20interesa%20una%20propiedad" target="_blank" class="cta-p"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i> Escribir por WhatsApp</a>
+    <a href="tel:+524771234567" class="cta-s"><i class="ti ti-phone" aria-hidden="true"></i> Llamar ahora</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot">
+    <div class="fb"><strong>Claudia Bernal</strong><span>Inmobiliaria · León, Gto.</span><p>Más de 15 años ayudando a familias y empresas a encontrar su lugar ideal en León y el Bajío.</p></div>
+    <div class="fc"><h4>Propiedades</h4><ul>
+      <li onclick="filtrar('casa_venta')">Casas en venta</li>
+      <li onclick="filtrar('casa_renta')">Casas en renta</li>
+      <li onclick="filtrar('terreno')">Terrenos</li>
+      <li onclick="filtrar('local_comercial')">Locales comerciales</li>
+    </ul></div>
+    <div class="fc"><h4>Contacto</h4><ul>
+      <li><i class="ti ti-map-pin" aria-hidden="true"></i> León, Guanajuato</li>
+      <li><i class="ti ti-phone" aria-hidden="true"></i> 477 123 4567</li>
+      <li><i class="ti ti-mail" aria-hidden="true"></i> contacto@claudiabernal.mx</li>
+    </ul></div>
+  </div>
+  <div class="fbot"><p>© 2025 Claudia Bernal Inmobiliaria</p><p>León, Guanajuato · México</p></div>
+</footer>
+</div><!-- /v-web -->
+
+<!-- ════════════════════════════════════════════════════
+     DETALLE MODAL
+════════════════════════════════════════════════════ -->
+<div class="det-bg" id="det-bg" onclick="if(event.target===this)cerrarDet()">
+  <div class="det-box">
+    <button class="det-x" onclick="cerrarDet()"><i class="ti ti-x" aria-hidden="true"></i></button>
+    <div class="det-gal" id="det-gal"></div>
+    <div class="det-grid">
+      <div class="det-l">
+        <div class="dtt" id="d-tipo"></div>
+        <h2 class="dt" id="d-t"></h2>
+        <div class="dl" id="d-l"></div>
+        <div class="dp" id="d-p"></div>
+        <div class="dsg" id="d-sg"></div>
+        <div class="dd" id="d-d"></div>
+        <div class="dam" id="d-am"></div>
+        <div style="display:flex;gap:8px;margin-top:12px" id="d-adm"></div>
+      </div>
+      <div class="det-r">
+        <div class="df">
+          <h3>¿Te interesa?</h3>
+          <p>Un asesor te responde en menos de 1 hora</p>
+          <input class="di" id="cf-n" placeholder="Tu nombre completo">
+          <input class="di" id="cf-t" placeholder="Teléfono / WhatsApp" type="tel">
+          <input class="di" id="cf-e" placeholder="Correo electrónico" type="email">
+          <textarea class="di" id="cf-m" rows="3" placeholder="¿Alguna pregunta?"></textarea>
+          <button class="dsub" onclick="enviarContacto()"><i class="ti ti-send" aria-hidden="true"></i> Solicitar visita</button>
+          <button class="dwa" id="d-wa"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i> Escribir por WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     ADMIN PANEL (agregar/editar propiedades)
+════════════════════════════════════════════════════ -->
+<div class="adm-bg" id="adm-bg">
+  <div class="adm-box">
+    <div class="adm-hdr">
+      <h2>Panel de administración</h2>
+      <button class="adm-close" onclick="cerrarAdmin()"><i class="ti ti-x" aria-hidden="true"></i> Cerrar</button>
+    </div>
+    <div class="adm-tabs">
+      <div class="atab on" onclick="atab('lst',this)">Mis propiedades</div>
+      <div class="atab" onclick="atab('frm',this)">Nueva / Editar</div>
+    </div>
+    <div class="asec on" id="as-lst" id="as-lst"><div id="adm-lst"></div></div>
+    <div class="asec" id="as-frm">
+      <form onsubmit="guardarProp(event)">
+        <input type="hidden" id="f-id">
+        <div class="fgrid">
+          <div class="fg fc2"><div class="flbl">Título *</div><input class="fi" id="f-t" placeholder="Casa en Col. Jardines del Moral" required></div>
+          <div class="fg"><div class="flbl">Tipo *</div>
+            <select class="fsel" id="f-tp">
+              <option value="casa_venta">Casa en venta</option><option value="casa_renta">Casa en renta</option>
+              <option value="terreno">Terreno</option><option value="local_comercial">Local comercial</option>
+            </select></div>
+          <div class="fg"><div class="flbl">Precio (MXN) *</div><input class="fi" id="f-pr" type="number" placeholder="1800000" required></div>
+          <div class="fg"><div class="flbl">Colonia</div><input class="fi" id="f-col" placeholder="Cumbres del Sol"></div>
+          <div class="fg"><div class="flbl">Municipio</div><input class="fi" id="f-mun" value="León"></div>
+          <div class="fg"><div class="flbl">Recámaras</div><input class="fi" id="f-rec" type="number" min="0" placeholder="3"></div>
+          <div class="fg"><div class="flbl">Baños</div><input class="fi" id="f-ban" type="number" min="0" placeholder="2"></div>
+          <div class="fg"><div class="flbl">M² construcción</div><input class="fi" id="f-m2c" type="number" placeholder="180"></div>
+          <div class="fg"><div class="flbl">M² terreno</div><input class="fi" id="f-m2t" type="number" placeholder="240"></div>
+          <div class="fg"><div class="flbl">Estatus</div>
+            <select class="fsel" id="f-est">
+              <option value="disponible">Disponible</option><option value="reservado">Reservado</option><option value="vendido">Vendido</option>
+            </select></div>
+          <div class="fg fc2"><div class="flbl">Descripción</div><textarea class="fta" id="f-desc" placeholder="Descripción detallada..."></textarea></div>
+          <div class="fg fc2"><div class="flbl">Características</div>
+            <div class="fchks">
+              <label class="fchk"><input type="checkbox" id="f-jar"> Jardín</label>
+              <label class="fchk"><input type="checkbox" id="f-alb"> Alberca</label>
+              <label class="fchk"><input type="checkbox" id="f-seg"> Seguridad</label>
+              <label class="fchk"><input type="checkbox" id="f-amue"> Amueblado</label>
+              <label class="fchk"><input type="checkbox" id="f-neg"> Precio negociable</label>
+              <label class="fchk"><input type="checkbox" id="f-dest"> ⭐ Destacar</label>
+              <label class="fchk"><input type="checkbox" id="f-pub" checked> Publicar en web</label>
+            </div></div>
+          <div class="fg fc2"><div class="flbl">Fotos</div>
+            <div class="uz" onclick="document.getElementById('fi').click()">
+              <i class="ti ti-photo" style="font-size:26px;color:var(--tm)" aria-hidden="true"></i>
+              <p>Haz clic o arrastra fotos (JPG, PNG, WEBP)</p>
+            </div>
+            <input type="file" id="fi" multiple accept="image/*" style="display:none" onchange="prevFotos(event)">
+            <div class="fp-grid" id="fp-grid"></div>
+          </div>
+        </div>
+        <div class="f-acts">
+          <button type="button" class="fcanc" onclick="atab('lst',null)">Cancelar</button>
+          <button type="submit" class="fsave"><i class="ti ti-check" aria-hidden="true"></i> <span id="f-lbl">Guardar propiedad</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     CRM
+════════════════════════════════════════════════════ -->
+<div id="v-crm">
+  <div class="crm-top">
+    <button onclick="irWeb()" style="background:none;border:none;cursor:pointer;color:var(--t3);font-size:13px;display:flex;align-items:center;gap:4px;font-family:'DM Sans',sans-serif"><i class="ti ti-arrow-left" aria-hidden="true"></i> Web</button>
+    <h3>Panel CRM — Claudia Bernal Inmobiliaria</h3>
+    <div class="crm-top-r">
+      <span style="font-size:12px;color:var(--t2)"><i class="ti ti-user-circle" aria-hidden="true"></i> Claudia Bernal</span>
+      <button class="crm-exit" onclick="irWeb()"><i class="ti ti-logout" aria-hidden="true"></i> Salir</button>
+    </div>
+  </div>
+  <div class="crm-wrap">
+    <div class="crm-side">
+      <div class="crm-logo"><strong>CB Inmobiliaria</strong><span>Panel de control</span></div>
+      <nav class="crm-nav">
+        <button class="cni on" onclick="ctab('dash',this)"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard</button>
+        <button class="cni" onclick="ctab('citas',this)"><i class="ti ti-calendar-check" aria-hidden="true"></i> Citas</button>
+        <button class="cni" onclick="ctab('clientes',this)"><i class="ti ti-users" aria-hidden="true"></i> Clientes</button>
+        <button class="cni" onclick="ctab('inm',this)"><i class="ti ti-building-estate" aria-hidden="true"></i> Inmuebles</button>
+        <button class="cni" onclick="ctab('bot',this)"><i class="ti ti-message-chatbot" aria-hidden="true"></i> Bot IA</button>
+      </nav>
+      <div class="crm-back">
+        <button class="cni" onclick="irWeb()" style="color:rgba(255,255,255,.3)"><i class="ti ti-home" aria-hidden="true"></i> Ver sitio web</button>
+      </div>
+    </div>
+    <main class="crm-main">
+
+      <!-- DASHBOARD -->
+      <div class="cs on" id="cs-dash">
+        <div class="cs-hdr">
+          <div><h2>Dashboard</h2><p id="d-fecha"></p></div>
+          <button class="c-btn c-btn-p" onclick="ctab('citas',null);setTimeout(()=>openM('m-cita'),100)"><i class="ti ti-plus" aria-hidden="true"></i> Nueva cita</button>
+        </div>
+        <div class="kpis" id="kpis"></div>
+        <div class="pipe-wrap">
+          <div style="display:flex;justify-content:space-between;margin-bottom:14px;align-items:center">
+            <span style="font-size:13px;font-weight:600;color:var(--t1)">Pipeline de ventas</span>
+            <span style="font-size:11px;color:var(--t3)" id="pipe-lbl"></span>
+          </div>
+          <div class="pipe" id="pipe"></div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-c"><h4>Conversión del proceso</h4><div id="funnel"></div></div>
+          <div class="stat-c"><h4>Propiedades activas</h4><div id="d-inm-list"></div></div>
+        </div>
+      </div>
+
+      <!-- CITAS -->
+      <div class="cs" id="cs-citas">
+        <div class="cs-hdr">
+          <div><h2>Citas y Pipeline</h2><p>Haz clic en los círculos para marcar cada etapa</p></div>
+          <button class="c-btn c-btn-p" onclick="openM('m-cita')"><i class="ti ti-plus" aria-hidden="true"></i> Nueva cita</button>
+        </div>
+        <div class="tbl"><table>
+          <thead><tr>
+            <th>Cliente</th><th>Propiedad</th><th>Fecha</th>
+            <th style="text-align:center">Contactado</th><th style="text-align:center">Visitó</th>
+            <th style="text-align:center">Negociando</th><th style="text-align:center">Cerrado</th>
+            <th>Etapa</th><th>Acción</th>
+          </tr></thead>
+          <tbody id="citas-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- CLIENTES -->
+      <div class="cs" id="cs-clientes">
+        <div class="cs-hdr">
+          <div><h2>Clientes</h2><p id="cli-lbl">—</p></div>
+          <div style="display:flex;gap:8px">
+            <input id="cli-q" style="padding:8px 11px;border:.5px solid var(--border);border-radius:8px;font-size:12px;background:var(--card);color:var(--t1);outline:none;font-family:'DM Sans',sans-serif;width:200px" placeholder="Buscar..." oninput="renderCli()">
+            <button class="c-btn c-btn-p" onclick="openM('m-cli')"><i class="ti ti-user-plus" aria-hidden="true"></i> Nuevo</button>
+          </div>
+        </div>
+        <div class="tbl"><table>
+          <thead><tr><th>Nombre</th><th>Teléfono</th><th>Interés</th><th>Presupuesto</th><th>Origen</th><th>Etapa</th><th>Acciones</th></tr></thead>
+          <tbody id="cli-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- INMUEBLES CRM -->
+      <div class="cs" id="cs-inm">
+        <div class="cs-hdr">
+          <div><h2>Gestión de inmuebles</h2><p id="inm-lbl">—</p></div>
+          <div style="display:flex;gap:8px">
+            <input id="inm-q" style="padding:8px 11px;border:.5px solid var(--border);border-radius:8px;font-size:12px;background:var(--card);color:var(--t1);outline:none;font-family:'DM Sans',sans-serif;width:200px" placeholder="Buscar..." oninput="renderInm()">
+            <button class="c-btn c-btn-p" onclick="irWeb();setTimeout(abrirFormNuevo,200)"><i class="ti ti-plus" aria-hidden="true"></i> Nueva propiedad</button>
+          </div>
+        </div>
+        <div style="background:var(--card);border:.5px solid var(--border);border-radius:10px;overflow:hidden" id="inm-list"></div>
+      </div>
+
+      <!-- BOT IA -->
+      <div class="cs" id="cs-bot">
+        <div class="cs-hdr">
+          <div><h2>Bot IA — Conversaciones</h2><p>WhatsApp · Correo · Formulario web</p></div>
+          <div style="display:flex;gap:8px">
+            <button class="c-btn c-btn-s" onclick="toast('Exportando...')"><i class="ti ti-download" aria-hidden="true"></i> Exportar</button>
+            <button class="c-btn c-btn-p" onclick="openM('m-cita')"><i class="ti ti-calendar-plus" aria-hidden="true"></i> Agendar cita</button>
+          </div>
+        </div>
+        <div class="bot-wr">
+          <div class="bot-side">
+            <div class="bot-sh">Conversaciones</div>
+            <div id="bot-convs"></div>
+          </div>
+          <div class="bot-m" style="display:flex;flex-direction:column">
+            <div class="bot-h">
+              <div><h4 id="bot-cn">—</h4><p id="bot-cs">Selecciona una conversación</p></div>
+              <div style="display:flex;gap:6px">
+                <button class="c-btn c-btn-s" style="font-size:11px;padding:5px 10px" onclick="toast('Escalado al agente')"><i class="ti ti-user-check" aria-hidden="true"></i> Escalar</button>
+                <button class="c-btn c-btn-p" style="font-size:11px;padding:5px 10px" onclick="openM('m-cita')"><i class="ti ti-calendar-plus" aria-hidden="true"></i> Cita</button>
+              </div>
+            </div>
+            <div class="bot-msgs" id="bot-msgs" style="flex:1;overflow-y:auto"></div>
+            <div class="bot-ir">
+              <input class="bot-inp" id="bot-inp" placeholder="Responder como agente..." onkeydown="if(event.key==='Enter')botSend()">
+              <button class="bot-sb" onclick="botSend()"><i class="ti ti-send" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div><!-- /v-crm -->
+
+<!-- MODAL NUEVA CITA -->
+<div class="modal-bg" id="m-cita">
+  <div class="modal">
+    <h3><i class="ti ti-calendar-plus" style="color:var(--gold)" aria-hidden="true"></i> Nueva cita</h3>
+    <label class="mlbl">Cliente *</label><input class="minp" id="mc-n" placeholder="Nombre completo">
+    <label class="mlbl">Teléfono / WhatsApp</label><input class="minp" id="mc-t" placeholder="+52 477 000 0000">
+    <label class="mlbl">Propiedad de interés</label>
+    <select class="msel" id="mc-p"><option value="">Sin propiedad asignada</option></select>
+    <label class="mlbl">Fecha y hora</label><input class="minp" id="mc-f" type="datetime-local">
+    <label class="mlbl">Notas</label><textarea class="mta" id="mc-no" placeholder="Observaciones..."></textarea>
+    <div class="m-acts">
+      <button class="m-canc" onclick="closeM('m-cita')">Cancelar</button>
+      <button class="m-save" onclick="guardarCita()"><i class="ti ti-check" aria-hidden="true"></i> Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUEVO CLIENTE -->
+<div class="modal-bg" id="m-cli">
+  <div class="modal">
+    <h3><i class="ti ti-user-plus" style="color:var(--gold)" aria-hidden="true"></i> Nuevo cliente</h3>
+    <label class="mlbl">Nombre *</label><input class="minp" id="ncn" placeholder="Nombre completo">
+    <label class="mlbl">Teléfono</label><input class="minp" id="nct">
+    <label class="mlbl">Correo</label><input class="minp" id="nce" type="email">
+    <label class="mlbl">Tipo de interés</label>
+    <select class="msel" id="nci"><option value="compra">Compra</option><option value="renta">Renta</option><option value="inversion">Inversión</option></select>
+    <label class="mlbl">Presupuesto (MXN)</label><input class="minp" id="ncp" type="number">
+    <label class="mlbl">Origen</label>
+    <select class="msel" id="nco"><option value="web">Web</option><option value="whatsapp">WhatsApp</option><option value="referido">Referido</option><option value="facebook">Facebook</option></select>
+    <div class="m-acts">
+      <button class="m-canc" onclick="closeM('m-cli')">Cancelar</button>
+      <button class="m-save" onclick="guardarCli()"><i class="ti ti-check" aria-hidden="true"></i> Registrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT FAB -->
+<button class="cfab" id="cfab" onclick="toggleChat()" aria-label="Abrir chat"><i class="ti ti-message-circle" style="font-size:22px;color:var(--dark)" aria-hidden="true"></i></button>
+<div class="cwin" id="cwin">
+  <div class="cwh">
+    <div style="display:flex;align-items:center"><div class="cwav">🤖</div><div style="margin-left:8px"><h4>Asistente CB</h4><p><span style="width:5px;height:5px;background:#4ade80;border-radius:50%;display:inline-block"></span> En línea</p></div></div>
+    <button class="cw-x" onclick="toggleChat()" aria-label="Cerrar"><i class="ti ti-x" aria-hidden="true"></i></button>
+  </div>
+  <div class="cwm" id="cwm"></div>
+  <div class="cwi-row">
+    <input class="cwi" id="cwi" placeholder="Escribe tu consulta..." onkeydown="if(event.key==='Enter')chatSend()">
+    <button class="cws" onclick="chatSend()" aria-label="Enviar"><i class="ti ti-send" aria-hidden="true"></i></button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════
+   DATOS
+═══════════════════════════════════════════ */
+const TIPOS={casa_venta:'Casa en venta',casa_renta:'Casa en renta',terreno:'Terreno',local_comercial:'Local comercial'};
+const EMO={casa_venta:'🏡',casa_renta:'🏠',terreno:'🌿',local_comercial:'🏪'};
+const TCLS={casa_venta:'tv',casa_renta:'tr',terreno:'tt',local_comercial:'tc'};
+
+let PROPS=[
+  {id:1,t:'Casa Residencial Cumbres del Sol',tp:'casa_venta',pr:1800000,col:'Cumbres del Sol',mun:'León',rec:3,ban:2,m2c:180,m2t:240,jar:true,alb:false,seg:true,amue:false,neg:true,dest:true,pub:true,est:'disponible',desc:'Hermosa residencia en zona exclusiva. 2 niveles, jardín privado, acabados de lujo, cocina integral y estacionamiento doble. A 5 minutos del Blvd. Aeropuerto.',fotos:[]},
+  {id:2,t:'Residencial Plus Del Campestre',tp:'casa_venta',pr:2450000,col:'Del Campestre',mun:'León',rec:4,ban:3,m2c:260,m2t:320,jar:true,alb:true,seg:true,amue:false,neg:false,dest:true,pub:true,est:'disponible',desc:'Residencia de lujo con alberca privada, 4 recámaras amplias, 3 baños completos, jardín diseñado por paisajista y acceso controlado 24h.',fotos:[]},
+  {id:3,t:'Casa Familiar Col. Centro',tp:'casa_renta',pr:9500,col:'Centro',mun:'León',rec:3,ban:2,m2c:140,m2t:180,jar:false,alb:false,seg:false,amue:true,neg:true,dest:false,pub:true,est:'disponible',desc:'Casa amueblada en el corazón de León. 3 recámaras, sala-comedor integrado, cocina equipada con electrodomésticos y cuarto de servicio.',fotos:[]},
+  {id:4,t:'Lote Residencial Zona Sur',tp:'terreno',pr:850000,col:'Zona Sur',mun:'León',rec:null,ban:null,m2c:null,m2t:400,jar:false,alb:false,seg:false,amue:false,neg:false,dest:false,pub:true,est:'disponible',desc:'Excelente oportunidad de inversión. Lote de 400 m² en zona residencial en desarrollo, todos los servicios (agua, luz, drenaje) y escrituras al corriente.',fotos:[]},
+  {id:5,t:'Local Blvd. Aeropuerto',tp:'local_comercial',pr:18000,col:'Blvd. Aeropuerto',mun:'León',rec:null,ban:1,m2c:95,m2t:null,jar:false,alb:false,seg:true,amue:false,neg:true,dest:false,pub:true,est:'disponible',desc:'Local en excelente ubicación sobre el Blvd. Aeropuerto, una de las vías de mayor afluencia de León. Bodega, baño y acceso independiente para carga.',fotos:[]},
+  {id:6,t:'Casa Moderna Col. Pizarro',tp:'casa_renta',pr:12000,col:'Pizarro',mun:'León',rec:3,ban:2,m2c:155,m2t:200,jar:true,alb:false,seg:false,amue:false,neg:false,dest:false,pub:true,est:'disponible',desc:'Casa de diseño moderno en una de las colonias más tranquilas de León. 3 recámaras, 2 baños, jardín y cochera techada para 2 autos.',fotos:[]}
+];
+let PFILT=[...PROPS];
+let CITAS=[
+  {id:1,cli_id:1,nombre:'Juan Hernández',tel:'477-100-2345',prop:'Casa Cumbres del Sol',fecha:'2025-07-01T16:00',cont:true,vis:true,neg:false,cerr:false,notas:'Muy interesado, pidió tiempo para conseguir enganche'},
+  {id:2,cli_id:2,nombre:'María Jiménez',tel:'477-200-3456',prop:'Residencial Plus',fecha:'2025-07-03T11:00',cont:true,vis:false,neg:false,cerr:false,notas:'Busca casa para inversión familiar'},
+  {id:3,cli_id:3,nombre:'Roberto Soto',tel:'477-310-4567',prop:'Casa Cumbres del Sol',fecha:'2025-07-06T15:00',cont:true,vis:true,neg:true,cerr:false,notas:'Oferta de $1.7M sobre la mesa'},
+  {id:4,cli_id:4,nombre:'Fernando Ruiz',tel:'477-420-5678',prop:'Casa Del Campestre',fecha:'2025-06-20T13:00',cont:true,vis:true,neg:true,cerr:true,notas:'Cerrado a $2.3M. Escrituras en proceso'},
+  {id:5,cli_id:5,nombre:'Gisela Mora',tel:'477-530-6789',prop:'Casa Renta Centro',fecha:'2025-07-09T10:00',cont:true,vis:true,neg:true,cerr:false,notas:'Negociando precio, quiere $8,500'}
+];
+let CLIS=[
+  {id:1,nombre:'Juan Hernández',tel:'477-100-2345',email:'juan@mail.com',int:'compra',pres:2000000,ori:'whatsapp',eta:'visito'},
+  {id:2,nombre:'María Jiménez',tel:'477-200-3456',email:'maria@mail.com',int:'compra',pres:1800000,ori:'web',eta:'contactado'},
+  {id:3,nombre:'Roberto Soto',tel:'477-310-4567',email:'rsoto@mail.com',int:'compra',pres:2500000,ori:'referido',eta:'negociando'},
+  {id:4,nombre:'Fernando Ruiz',tel:'477-420-5678',email:'fruiz@mail.com',int:'compra',pres:3000000,ori:'facebook',eta:'cerrado'},
+  {id:5,nombre:'Gisela Mora',tel:'477-530-6789',email:'gisela@mail.com',int:'renta',pres:15000,ori:'web',eta:'negociando'}
+];
+const CONVS=[
+  {name:'Juan Hernández',ch:'WhatsApp',sub:'Casa Cumbres del Sol',msgs:[
+    {r:'u',t:'Hola, vi una casa en su página, ¿sigue disponible?'},
+    {r:'b',t:'¡Hola! Soy el asistente de Claudia Bernal Inmobiliaria 🏠 Con gusto te ayudo. ¿Cuál propiedad te interesó?'},
+    {r:'u',t:'La casa Cumbres del Sol de $1,800,000'},
+    {r:'b',t:'¡Excelente elección! La Casa Cumbres del Sol está disponible: 3 recámaras, 2 baños, 180 m² con jardín privado. ¿Te gustaría agendar una visita esta semana?'},
+    {r:'u',t:'Sí, ¿pueden ser mañana por la tarde?'},
+    {r:'b',t:'Perfecto, tenemos disponibilidad mañana a las 4:00 PM. Te confirmo la cita y recibirás un recordatorio por WhatsApp. 📅 ¿Me confirmas tu nombre completo?'}
+  ]},
+  {name:'María Jiménez',ch:'Correo',sub:'Casas en renta con 3+ recámaras',msgs:[
+    {r:'u',t:'Buenas tardes, ¿tienen casas en renta con más de 3 recámaras en zona centro?'},
+    {r:'b',t:'¡Buenas tardes! Contamos con la Casa Familiar en Col. Centro con 3 recámaras a $9,500/mes (amueblada) y Casa Pizarro a $12,000/mes. ¿Le envío ficha técnica de alguna?'}
+  ]},
+  {name:'Pedro García',ch:'Web',sub:'Terrenos Zona Sur',msgs:[
+    {r:'u',t:'¿Tienen terrenos en Zona Sur con servicios?'},
+    {r:'b',t:'¡Sí! Contamos con un lote residencial de 400 m² en Zona Sur a $850,000 MXN. Cuenta con todos los servicios (agua, luz, drenaje) y escrituras al corriente. ¿Quieres más información?'},
+    {r:'u',t:'¿Cuánto bajan?'},
+    {r:'b',t:'El precio tiene margen de negociación. Te sugiero que agendemos una visita al terreno para que lo veas y conversamos directamente. ¿Tienes disponibilidad esta semana?'}
+  ]}
+];
+let CURCONV=0,CADM=false,EDITID=null,NEWFOTOS=[],DET=null,DETIDX=0,CHATOPEN=false;
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('s',scrollY>50));
+window.addEventListener('load',()=>{
+  renderGrid();
+  initChat();
+  document.getElementById('stat-n').textContent=PROPS.filter(p=>p.pub).length;
+  document.getElementById('d-fecha').textContent=new Date().toLocaleDateString('es-MX',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  PROPS.forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=p.t;document.getElementById('mc-p').appendChild(o);});
+});
+
+/* ═══════════════════════════════════════════
+   VISTAS
+═══════════════════════════════════════════ */
+function irCRM(){
+  document.getElementById('v-web').style.display='none';
+  document.getElementById('cfab').style.display='none';
+  document.getElementById('cwin').classList.remove('open');
+  const c=document.getElementById('v-crm');c.style.display='flex';c.style.flexDirection='column';
+  document.body.style.background='var(--bg)';
+  renderDash();renderCitas();renderCli();renderInm();renderBot();
+  document.getElementById('d-fecha').textContent=new Date().toLocaleDateString('es-MX',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+}
+function irWeb(){
+  document.getElementById('v-crm').style.display='none';
+  document.getElementById('v-web').style.display='block';
+  document.getElementById('cfab').style.display='';
+  document.body.style.background='var(--dark)';
+}
+function gsc(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'});}
+
+/* ═══════════════════════════════════════════
+   GRID
+═══════════════════════════════════════════ */
+function renderGrid(){
+  const g=document.getElementById('grid'),em=document.getElementById('empty');
+  document.getElementById('rc').textContent=PFILT.length+' propiedades';
+  if(!PFILT.length){g.innerHTML='';em.style.display='block';return;}
+  em.style.display='none';
+  const body=document.body;
+  g.innerHTML=PFILT.map(p=>{
+    const renta=p.tp.includes('renta')||p.tp==='local_comercial';
+    const img=p.fotos?.length?`<img src="${p.fotos[0]}" alt="${p.t}" loading="lazy">`:`<span style="font-size:52px">${EMO[p.tp]||'🏠'}</span>`;
+    return `<div class="card ${CADM?'admin-active':''}" onclick="abrirDet(${p.id})">
+      <div class="card-img">${img}<span class="tag ${TCLS[p.tp]||'tv'}">${TIPOS[p.tp]}</span>${p.dest?'<span class="tag-dest">⭐ Destacado</span>':''}</div>
+      <div class="card-body">
+        <div class="ct">${TIPOS[p.tp]}</div>
+        <div class="cn">${p.t}</div>
+        <div class="cloc"><i class="ti ti-map-pin" style="font-size:10px;color:var(--gold)" aria-hidden="true"></i> ${p.col}, ${p.mun}</div>
+        <div class="cp">${fp(p.pr,renta)}</div>
+        <div class="cs">
+          ${p.rec?`<span><i class="ti ti-bed" style="font-size:12px" aria-hidden="true"></i> ${p.rec}</span>`:''}
+          ${p.ban?`<span><i class="ti ti-bath" style="font-size:12px" aria-hidden="true"></i> ${p.ban}</span>`:''}
+          ${p.m2c?`<span><i class="ti ti-ruler" style="font-size:12px" aria-hidden="true"></i> ${p.m2c}m²</span>`:''}
+          ${(!p.m2c&&p.m2t)?`<span><i class="ti ti-ruler" style="font-size:12px" aria-hidden="true"></i> ${p.m2t}m²</span>`:''}
+        </div>
+      </div>
+      <div class="card-acts">
+        <div class="ca-wa" onclick="event.stopPropagation();abrirWA(${p.id})"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i> WhatsApp</div>
+        <div class="ca-d"><i class="ti ti-eye" aria-hidden="true"></i> Ver detalle</div>
+      </div>
+      <div class="adm-ov">
+        <button class="adm-btn" onclick="event.stopPropagation();editarP(${p.id})"><i class="ti ti-edit" aria-hidden="true"></i> Editar</button>
+        <button class="adm-btn del" onclick="event.stopPropagation();elimP(${p.id})"><i class="ti ti-trash" aria-hidden="true"></i> Eliminar</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function buscar(){
+  const q=document.getElementById('q').value.toLowerCase();
+  const t=document.getElementById('ft').value;
+  const pv=document.getElementById('fp').value;
+  const r=parseInt(document.getElementById('fr').value)||0;
+  PFILT=PROPS.filter(p=>{
+    if(!p.pub&&!CADM)return false;
+    if(q&&!p.t.toLowerCase().includes(q)&&!p.col.toLowerCase().includes(q))return false;
+    if(t&&p.tp!==t)return false;
+    if(r&&(p.rec||0)<r)return false;
+    if(pv){const[mn,mx]=pv.split('-').map(Number);if(p.pr<mn||p.pr>mx)return false;}
+    return true;
+  });
+  renderGrid();
+}
+function filtrar(tp){document.getElementById('ft').value=tp;buscar();gsc('s-props');}
+function limpiar(){['q','ft','fp','fr'].forEach(id=>document.getElementById(id).value='');buscar();}
+
+/* ═══════════════════════════════════════════
+   DETALLE
+═══════════════════════════════════════════ */
+function abrirDet(id){
+  const p=PROPS.find(x=>x.id===id);if(!p)return;
+  DET=p;DETIDX=0;
+  const g=document.getElementById('det-gal');
+  if(p.fotos?.length){
+    g.innerHTML=`<img src="${p.fotos[0]}" alt="${p.t}" style="width:100%;height:100%;object-fit:cover">${p.fotos.length>1?`<button class="det-nav l" onclick="df(-1)"><i class="ti ti-chevron-left" aria-hidden="true"></i></button><button class="det-nav r" onclick="df(1)"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>`:''}`;
+  } else {g.innerHTML=`<span style="font-size:72px">${EMO[p.tp]||'🏠'}</span>`;}
+  const renta=p.tp.includes('renta')||p.tp==='local_comercial';
+  document.getElementById('d-tipo').textContent=TIPOS[p.tp];
+  document.getElementById('d-t').textContent=p.t;
+  document.getElementById('d-l').innerHTML=`<i class="ti ti-map-pin" style="font-size:12px;color:var(--gold)" aria-hidden="true"></i> ${p.col}, ${p.mun}, Guanajuato`;
+  document.getElementById('d-p').textContent=fp(p.pr,renta);
+  const sp=[];
+  if(p.rec)sp.push({v:p.rec,l:'Recámaras'});
+  if(p.ban)sp.push({v:p.ban,l:'Baños'});
+  if(p.m2c)sp.push({v:p.m2c+'m²',l:'Construcción'});
+  if(p.m2t)sp.push({v:p.m2t+'m²',l:'Terreno'});
+  document.getElementById('d-sg').innerHTML=sp.map(s=>`<div class="dsp"><div class="dsp-v">${s.v}</div><div class="dsp-l">${s.l}</div></div>`).join('');
+  document.getElementById('d-d').textContent=p.desc||'Propiedad disponible. Contáctenos para más información.';
+  const am=[];
+  if(p.jar)am.push('🌿 Jardín');if(p.alb)am.push('🏊 Alberca');
+  if(p.seg)am.push('🔒 Seguridad');if(p.amue)am.push('🛋 Amueblado');
+  if(p.neg)am.push('💬 Precio negociable');
+  document.getElementById('d-am').innerHTML=am.map(a=>`<div class="dat">${a}</div>`).join('');
+  document.getElementById('d-wa').onclick=()=>window.open(`https://wa.me/524771234567?text=${encodeURIComponent(`Me interesa: *${p.t}*`)}`, '_blank');
+  document.getElementById('d-adm').innerHTML=CADM?`<button class="cta-s" style="font-size:11px;padding:8px 16px" onclick="editarP(${p.id})"><i class="ti ti-edit" aria-hidden="true"></i> Editar</button><button class="cta-s" style="font-size:11px;padding:8px 16px;border-color:rgba(239,68,68,.4);color:#f87171" onclick="elimP(${p.id})"><i class="ti ti-trash" aria-hidden="true"></i> Eliminar</button>`:'';
+  document.getElementById('det-bg').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function df(d){const f=DET?.fotos||[];DETIDX=(DETIDX+d+f.length)%f.length;const i=document.querySelector('#det-gal img');if(i)i.src=f[DETIDX];}
+function cerrarDet(){document.getElementById('det-bg').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('det-bg').addEventListener('click',e=>{if(e.target===document.getElementById('det-bg'))cerrarDet();});
+
+async function enviarContacto(){
+  const n=document.getElementById('cf-n').value.trim(),t=document.getElementById('cf-t').value.trim();
+  if(!n||!t){toast('⚠️ Nombre y teléfono son obligatorios');return;}
+  CLIS.unshift({id:Date.now(),nombre:n,tel:t,email:document.getElementById('cf-e').value,int:'compra',pres:null,ori:'web',eta:'nuevo'});
+  toast('✅ Mensaje enviado. Te contactamos pronto.');
+  ['cf-n','cf-t','cf-e','cf-m'].forEach(i=>document.getElementById(i).value='');
+}
+
+/* ═══════════════════════════════════════════
+   ADMIN
+═══════════════════════════════════════════ */
+function toggleAdm(){
+  CADM=!CADM;
+  const btn=document.getElementById('btn-adm');
+  btn.style.borderColor=CADM?'var(--gold)':'';
+  btn.style.color=CADM?'var(--gold)':'';
+  document.getElementById('s-add').style.display=CADM?'inline-flex':'none';
+  buscar();
+  toast(CADM?'✅ Modo admin activo — clic en propiedad para editar':'Modo admin desactivado');
+}
+function abrirFormNuevo(){EDITID=null;NEWFOTOS=[];resetF();abrirAdmin();atab('frm',null);document.querySelectorAll('.atab')[1].classList.add('on');}
+function abrirAdmin(){document.getElementById('adm-bg').classList.add('open');document.body.style.overflow='hidden';renderAdmLst();}
+function cerrarAdmin(){document.getElementById('adm-bg').classList.remove('open');document.body.style.overflow='';renderGrid();}
+function atab(s,el){
+  document.querySelectorAll('.atab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.asec').forEach(x=>x.classList.remove('on'));
+  if(el)el.classList.add('on');
+  document.getElementById('as-'+s).classList.add('on');
+  if(s==='lst')renderAdmLst();
+}
+function resetF(){
+  document.getElementById('f-id').value='';
+  ['f-t','f-pr','f-col','f-rec','f-ban','f-m2c','f-m2t','f-desc'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('f-mun').value='León';
+  document.getElementById('f-tp').value='casa_venta';
+  document.getElementById('f-est').value='disponible';
+  ['f-jar','f-alb','f-seg','f-amue','f-neg','f-dest'].forEach(i=>document.getElementById(i).checked=false);
+  document.getElementById('f-pub').checked=true;
+  document.getElementById('fp-grid').innerHTML='';
+  document.getElementById('f-lbl').textContent='Guardar propiedad';
+}
+function editarP(id){
+  const p=PROPS.find(x=>x.id===id);if(!p)return;
+  cerrarDet();EDITID=id;NEWFOTOS=[];
+  document.getElementById('f-id').value=id;
+  document.getElementById('f-t').value=p.t||'';
+  document.getElementById('f-tp').value=p.tp;
+  document.getElementById('f-pr').value=p.pr;
+  document.getElementById('f-col').value=p.col||'';
+  document.getElementById('f-mun').value=p.mun||'León';
+  document.getElementById('f-rec').value=p.rec||'';
+  document.getElementById('f-ban').value=p.ban||'';
+  document.getElementById('f-m2c').value=p.m2c||'';
+  document.getElementById('f-m2t').value=p.m2t||'';
+  document.getElementById('f-est').value=p.est||'disponible';
+  document.getElementById('f-desc').value=p.desc||'';
+  document.getElementById('f-jar').checked=!!p.jar;
+  document.getElementById('f-alb').checked=!!p.alb;
+  document.getElementById('f-seg').checked=!!p.seg;
+  document.getElementById('f-amue').checked=!!p.amue;
+  document.getElementById('f-neg').checked=!!p.neg;
+  document.getElementById('f-dest').checked=!!p.dest;
+  document.getElementById('f-pub').checked=!!p.pub;
+  document.getElementById('f-lbl').textContent='Actualizar propiedad';
+  const fotos=p.fotos||[];
+  document.getElementById('fp-grid').innerHTML=fotos.map((f,i)=>`<div class="fp-t"><img src="${f}" alt="foto"><button class="fp-del" onclick="delFoto(${id},${i})"><i class="ti ti-x" aria-hidden="true"></i></button></div>`).join('');
+  abrirAdmin();atab('frm',null);document.querySelectorAll('.atab')[1].classList.add('on');
+}
+function delFoto(id,i){const p=PROPS.find(x=>x.id===id);if(p)(p.fotos||[]).splice(i,1);document.querySelectorAll('.fp-t')[i]?.remove();}
+function prevFotos(e){
+  const files=Array.from(e.target.files);NEWFOTOS.push(...files);
+  const g=document.getElementById('fp-grid');
+  files.forEach(f=>{const url=URL.createObjectURL(f);const d=document.createElement('div');d.className='fp-t';d.innerHTML=`<img src="${url}" alt="">`;g.appendChild(d);});
+}
+function guardarProp(e){
+  e.preventDefault();
+  const body={t:document.getElementById('f-t').value,tp:document.getElementById('f-tp').value,pr:parseFloat(document.getElementById('f-pr').value),col:document.getElementById('f-col').value||'',mun:document.getElementById('f-mun').value||'León',rec:parseInt(document.getElementById('f-rec').value)||null,ban:parseInt(document.getElementById('f-ban').value)||null,m2c:parseFloat(document.getElementById('f-m2c').value)||null,m2t:parseFloat(document.getElementById('f-m2t').value)||null,est:document.getElementById('f-est').value,desc:document.getElementById('f-desc').value,jar:document.getElementById('f-jar').checked,alb:document.getElementById('f-alb').checked,seg:document.getElementById('f-seg').checked,amue:document.getElementById('f-amue').checked,neg:document.getElementById('f-neg').checked,dest:document.getElementById('f-dest').checked,pub:document.getElementById('f-pub').checked};
+  // Fotos: combinar existentes + nuevas preview URLs
+  const fotosPrev=Array.from(document.querySelectorAll('#fp-grid .fp-t img')).map(i=>i.src);
+  body.fotos=fotosPrev;
+  if(EDITID){
+    const i=PROPS.findIndex(p=>p.id===EDITID);
+    PROPS[i]={...PROPS[i],...body,id:EDITID};
+    toast('✅ Propiedad actualizada');
+  } else {
+    body.id=Math.max(0,...PROPS.map(p=>p.id))+1;
+    PROPS.unshift(body);
+    toast('✅ Propiedad creada y publicada');
+  }
+  PFILT=[...PROPS];
+  document.getElementById('stat-n').textContent=PROPS.filter(p=>p.pub).length;
+  cerrarAdmin();renderGrid();
+}
+function elimP(id){
+  const p=PROPS.find(x=>x.id===id);
+  if(!confirm(`¿Eliminar "${p?.t}"?`))return;
+  PROPS=PROPS.filter(x=>x.id!==id);PFILT=PFILT.filter(x=>x.id!==id);
+  renderGrid();cerrarDet();toast('🗑️ Propiedad eliminada');renderAdmLst();
+}
+function renderAdmLst(){
+  document.getElementById('adm-lst').innerHTML=PROPS.map(p=>`
+    <div class="adm-row">
+      <div class="ar-ico">${EMO[p.tp]||'🏠'}</div>
+      <div class="ar-info"><h4>${p.t}</h4><p>${TIPOS[p.tp]} · ${p.col}</p></div>
+      <div class="ar-price">${fp(p.pr,p.tp.includes('renta'))}</div>
+      <span class="pill ${p.pub?'pill-on':'pill-off'}">${p.pub?'Publicado':'Borrador'}</span>
+      <button class="ar-btn" onclick="editarP(${p.id})"><i class="ti ti-edit" aria-hidden="true"></i> Editar</button>
+      <button class="ar-btn del" onclick="elimP(${p.id})"><i class="ti ti-trash" aria-hidden="true"></i></button>
+    </div>`).join('');
+}
+function abrirWA(id){const p=PROPS.find(x=>x.id===id);if(!p)return;window.open(`https://wa.me/524771234567?text=${encodeURIComponent('Me interesa: *'+p.t+'*')}`,'_blank');}
+
+/* ═══════════════════════════════════════════
+   CRM TABS
+═══════════════════════════════════════════ */
+function ctab(s,el){
+  document.querySelectorAll('.cni').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.cs').forEach(x=>x.classList.remove('on'));
+  if(el)el.classList.add('on');
+  document.getElementById('cs-'+s).classList.add('on');
+}
+
+/* ═══════════════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════════════ */
+function renderDash(){
+  const tot=CITAS.length,cont=CITAS.filter(c=>c.cont).length,vis=CITAS.filter(c=>c.vis).length,neg=CITAS.filter(c=>c.neg).length,cerr=CITAS.filter(c=>c.cerr).length;
+  document.getElementById('kpis').innerHTML=`
+    <div class="kpi"><div class="kpi-i kb"><i class="ti ti-users" style="color:#2563eb;font-size:16px" aria-hidden="true"></i></div><div class="kv">${CLIS.length}</div><div class="kl">Leads activos</div><div class="ks up">↑ ${CLIS.filter(c=>c.eta==='nuevo').length} nuevos</div></div>
+    <div class="kpi"><div class="kpi-i ka"><i class="ti ti-calendar-check" style="color:#d97706;font-size:16px" aria-hidden="true"></i></div><div class="kv">${vis}</div><div class="kl">Visitas realizadas</div><div class="ks" style="color:var(--t3)">Total acumulado</div></div>
+    <div class="kpi"><div class="kpi-i kg"><i class="ti ti-check-circle" style="color:#16a34a;font-size:16px" aria-hidden="true"></i></div><div class="kv">${cerr}</div><div class="kl">Cierres</div><div class="ks up">↑ Negocios firmados</div></div>
+    <div class="kpi"><div class="kpi-i kr"><i class="ti ti-message-circle" style="color:#e11d48;font-size:16px" aria-hidden="true"></i></div><div class="kv">${CONVS.length}</div><div class="kl">Conversaciones</div><div class="ks up">↑ Bot 97% responde</div></div>`;
+  document.getElementById('pipe-lbl').textContent=CLIS.length+' clientes activos';
+  const etapas=[{l:'Contactado',c:'#3b82f6',k:'contactado'},{l:'Visitó',c:'#f59e0b',k:'visito'},{l:'Negociando',c:'#C9A84C',k:'negociando'},{l:'Cerrado',c:'#22c55e',k:'cerrado'}];
+  const etaMap={nuevo:'nuevo',contactado:'contactado',visito:'visito',negociando:'negociando',cerrado:'cerrado'};
+  document.getElementById('pipe').innerHTML=etapas.map(e=>{
+    const leads=CLIS.filter(c=>c.eta===e.k);
+    return `<div class="pcol"><div class="phdr"><span><span class="pd" style="background:${e.c}"></span>${e.l}</span><span class="pc-n">${leads.length}</span></div>
+    ${leads.slice(0,2).map(l=>`<div class="lc"><div class="ln">${l.nombre}</div><div class="lp"><i class="ti ti-home" style="font-size:9px" aria-hidden="true"></i> ${TIPOS[l.int]||l.int}</div></div>`).join('')}</div>`;
+  }).join('');
+  // Funnel
+  const bars=[{l:'Contactados',v:tot?Math.round(cont/tot*100):0,c:'#3b82f6'},{l:'Visitaron',v:vis?Math.round(vis/tot*100):0,c:'#f59e0b'},{l:'Negociando',v:tot?Math.round(neg/tot*100):0,c:'#C9A84C'},{l:'Cerrados',v:tot?Math.round(cerr/tot*100):0,c:'#22c55e'}];
+  document.getElementById('funnel').innerHTML=bars.map(b=>`<div class="fbr"><div class="fbh"><span style="color:var(--t2)">${b.l}</span><strong style="color:${b.c}">${b.v}%</strong></div><div class="fbb"><div class="fbf" style="width:${b.v}%;background:${b.c}"></div></div></div>`).join('');
+  // Props mini
+  document.getElementById('d-inm-list').innerHTML=PROPS.slice(0,4).map(p=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:.5px solid var(--border)"><span style="font-size:16px">${EMO[p.tp]}</span><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.t}</div><div style="font-size:10px;color:var(--t3)">${fp(p.pr,p.tp.includes('renta'))}</div></div><span class="badge ${p.pub?'b-gr':'b-gy'}" style="font-size:9px">${p.pub?'Pub':'Draft'}</span></div>`).join('');
+}
+
+/* ═══════════════════════════════════════════
+   CITAS
+═══════════════════════════════════════════ */
+function renderCitas(){
+  const etiq=c=>{
+    if(c.cerr)return '<span class="badge b-gr">Cerrado ✓</span>';
+    if(c.neg)return '<span class="badge b-go">Negociando</span>';
+    if(c.vis)return '<span class="badge b-am">Visitó</span>';
+    if(c.cont)return '<span class="badge b-bl">Contactado</span>';
+    return '<span class="badge b-gy">Nuevo</span>';
+  };
+  document.getElementById('citas-body').innerHTML=CITAS.map(c=>`<tr>
+    <td><strong>${c.nombre}</strong><br><span style="font-size:10px;color:var(--t3)">${c.tel}</span></td>
+    <td style="font-size:10px;color:var(--t2);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.prop}</td>
+    <td style="font-size:10px;color:var(--t2)">${fmtF(c.fecha)}</td>
+    ${['cont','vis','neg','cerr'].map(f=>`<td style="text-align:center"><span class="sc ${c[f]?'done':'pend'}" onclick="toggleStep(${c.id},'${f}')" title="${f}">${c[f]?'✓':'·'}</span></td>`).join('')}
+    <td>${etiq(c)}</td>
+    <td><div style="display:flex;gap:4px">
+      <button style="font-size:10px;padding:3px 7px;border:.5px solid var(--border);border-radius:4px;cursor:pointer;background:var(--card);color:#16a34a" onclick="toast('Abriendo WhatsApp con ${c.nombre.replace(/'/g,"\\'")}...')"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i></button>
+      <button style="font-size:10px;padding:3px 7px;border:.5px solid rgba(239,68,68,.3);border-radius:4px;cursor:pointer;background:var(--card);color:#ef4444" onclick="elimCita(${c.id})"><i class="ti ti-trash" aria-hidden="true"></i></button>
+    </div></td>
+  </tr>`).join('');
+}
+function toggleStep(id,f){
+  const c=CITAS.find(x=>x.id===id);if(!c)return;
+  c[f]=!c[f];
+  // actualizar etapa del cliente
+  const cli=CLIS.find(x=>x.id===c.cli_id);
+  if(cli){const etapas=['cont','vis','neg','cerr'];const mapE={cont:'contactado',vis:'visito',neg:'negociando',cerr:'cerrado'};const ult=etapas.filter(e=>c[e]).pop();cli.eta=ult?mapE[ult]:'nuevo';}
+  renderCitas();renderDash();
+  toast(c[f]?`✅ ${f==='cerr'?'¡Negocio cerrado! 🎉':f+' marcado'}`:`${f} desmarcado`);
+}
+function elimCita(id){if(!confirm('¿Eliminar esta cita?'))return;CITAS=CITAS.filter(x=>x.id!==id);renderCitas();renderDash();toast('🗑️ Cita eliminada');}
+
+/* ═══════════════════════════════════════════
+   CLIENTES
+═══════════════════════════════════════════ */
+function renderCli(){
+  const q=(document.getElementById('cli-q')||{value:''}).value.toLowerCase();
+  const lista=CLIS.filter(c=>!q||c.nombre.toLowerCase().includes(q)||(c.tel||'').includes(q));
+  document.getElementById('cli-lbl').textContent=lista.length+' clientes registrados';
+  const bm={nuevo:'b-gy',contactado:'b-bl',visito:'b-am',negociando:'b-go',cerrado:'b-gr'};
+  document.getElementById('cli-body').innerHTML=lista.map(c=>`<tr>
+    <td><strong>${c.nombre}</strong></td>
+    <td style="font-size:11px">${c.tel||'—'}</td>
+    <td><span class="badge ${c.int==='compra'?'b-bl':'b-am'}" style="font-size:9px">${c.int}</span></td>
+    <td style="font-size:11px;color:var(--t2)">${c.pres?fp(c.pres,c.int==='renta'):'—'}</td>
+    <td style="font-size:11px;color:var(--t3)">${c.ori||'—'}</td>
+    <td><span class="badge ${bm[c.eta]||'b-gy'}" style="font-size:9px">${c.eta||'nuevo'}</span></td>
+    <td><div style="display:flex;gap:4px">
+      <button style="font-size:10px;padding:3px 7px;border:.5px solid rgba(37,211,102,.3);border-radius:4px;cursor:pointer;background:var(--card);color:#16a34a" onclick="toast('WhatsApp a ${c.nombre.replace(/'/g,"\\'")}...')"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i></button>
+      <button style="font-size:10px;padding:3px 7px;border:.5px solid rgba(239,68,68,.3);border-radius:4px;cursor:pointer;background:var(--card);color:#ef4444" onclick="elimCli(${c.id})"><i class="ti ti-trash" aria-hidden="true"></i></button>
+    </div></td>
+  </tr>`).join('')||`<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:20px">Sin clientes</td></tr>`;
+}
+function elimCli(id){if(!confirm('¿Eliminar?'))return;CLIS=CLIS.filter(x=>x.id!==id);renderCli();renderDash();toast('🗑️ Cliente eliminado');}
+
+/* ═══════════════════════════════════════════
+   INMUEBLES CRM
+═══════════════════════════════════════════ */
+function renderInm(){
+  const q=(document.getElementById('inm-q')||{value:''}).value.toLowerCase();
+  const lista=PROPS.filter(p=>!q||p.t.toLowerCase().includes(q)||p.col.toLowerCase().includes(q));
+  document.getElementById('inm-lbl').textContent=lista.length+' propiedades';
+  document.getElementById('inm-list').innerHTML=lista.map(p=>`
+    <div class="inm-row">
+      <div class="inm-ico">${EMO[p.tp]||'🏠'}</div>
+      <div class="inm-inf"><h4>${p.t}</h4><p>${TIPOS[p.tp]} · ${p.col} · ${p.m2c||p.m2t||'—'} m²</p></div>
+      <div class="inm-p">${fp(p.pr,p.tp.includes('renta'))}</div>
+      <span class="badge ${p.est==='disponible'?'b-gr':p.est==='reservado'?'b-am':'b-gy'}" style="font-size:9px">${p.est}</span>
+      <div class="tog ${p.pub?'on-e':''}" onclick="togPub(${p.id})" title="${p.pub?'Despublicar':'Publicar'}"><i class="ti ti-${p.pub?'eye':'eye-off'}" aria-hidden="true"></i></div>
+      <div class="tog ${p.dest?'on-s':''}" onclick="togDest(${p.id})" title="Destacar"><i class="ti ti-star" aria-hidden="true"></i></div>
+      <div style="display:flex;gap:4px">
+        <div class="ia" onclick="editarP(${p.id});irWeb()" title="Editar"><i class="ti ti-edit" aria-hidden="true"></i></div>
+        <div class="ia" onclick="elimP(${p.id})" title="Eliminar"><i class="ti ti-trash" aria-hidden="true"></i></div>
+      </div>
+    </div>`).join('');
+}
+function togPub(id){const p=PROPS.find(x=>x.id===id);if(!p)return;p.pub=!p.pub;renderInm();renderGrid();toast(p.pub?`✅ "${p.t}" publicado`:`"${p.t}" despublicado`);}
+function togDest(id){const p=PROPS.find(x=>x.id===id);if(!p)return;p.dest=!p.dest;renderInm();renderGrid();toast(p.dest?`⭐ Marcado como destacado`:`Quitado de destacados`);}
+
+/* ═══════════════════════════════════════════
+   BOT CRM
+═══════════════════════════════════════════ */
+function renderBot(){
+  document.getElementById('bot-convs').innerHTML=CONVS.map((c,i)=>`
+    <div class="ci ${i===CURCONV?'on':''}" onclick="selConv(${i})">
+      <div class="cin">${c.name}</div>
+      <div class="cil">${c.msgs.at(-1).t}</div>
+      <div class="cich ch-${c.ch==='WhatsApp'?'wa':c.ch==='Correo'?'ml':'wb'}">${c.ch}</div>
+    </div>`).join('');
+  renderBotMsgs();
+}
+function selConv(i){CURCONV=i;const c=CONVS[i];document.getElementById('bot-cn').textContent=c.name;document.getElementById('bot-cs').textContent=c.ch+' · '+c.sub;renderBot();}
+function renderBotMsgs(){
+  const now=new Date(),ft=d=>`${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+  document.getElementById('bot-msgs').innerHTML=CONVS[CURCONV].msgs.map(m=>`
+    <div class="bm ${m.r==='b'?'bot':'me'}">
+      <div class="bav ${m.r==='b'?'b':'u'}">${m.r==='b'?'🤖':'👤'}</div>
+      <div><div class="bb">${m.t}</div><div class="bt2">${m.r==='b'?'Bot':'Cliente'} · ${ft(now)}</div></div>
+    </div>`).join('');
+  document.getElementById('bot-msgs').scrollTop=9999;
+}
+function botSend(){
+  const inp=document.getElementById('bot-inp'),txt=inp.value.trim();if(!txt)return;
+  inp.value='';CONVS[CURCONV].msgs.push({r:'b',t:txt});
+  renderBotMsgs();toast('Respuesta enviada');
+}
+
+/* ═══════════════════════════════════════════
+   MODALES CRM
+═══════════════════════════════════════════ */
+function openM(id){document.getElementById(id).classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e=>{if(e.target===bg)bg.classList.remove('open');}));
+
+function guardarCita(){
+  const n=document.getElementById('mc-n').value.trim();
+  if(!n){toast('⚠️ El nombre es obligatorio');return;}
+  const sel=document.getElementById('mc-p');
+  const propN=sel.options[sel.selectedIndex]?.text||'Sin propiedad';
+  const nueva={id:Date.now(),cli_id:Date.now(),nombre:n,tel:document.getElementById('mc-t').value,prop:propN,fecha:document.getElementById('mc-f').value,cont:false,vis:false,neg:false,cerr:false,notas:document.getElementById('mc-no').value};
+  CITAS.unshift(nueva);
+  const nc={id:Date.now()+1,nombre:n,tel:document.getElementById('mc-t').value,email:'',int:'compra',pres:null,ori:'crm',eta:'nuevo'};
+  CLIS.unshift(nc);
+  closeM('m-cita');
+  ['mc-n','mc-t','mc-f','mc-no'].forEach(i=>document.getElementById(i).value='');
+  renderCitas();renderDash();renderCli();
+  toast('✅ Cita y cliente registrados');
+}
+function guardarCli(){
+  const n=document.getElementById('ncn').value.trim();
+  if(!n){toast('⚠️ El nombre es obligatorio');return;}
+  CLIS.unshift({id:Date.now(),nombre:n,tel:document.getElementById('nct').value,email:document.getElementById('nce').value,int:document.getElementById('nci').value,pres:parseFloat(document.getElementById('ncp').value)||null,ori:document.getElementById('nco').value,eta:'nuevo'});
+  closeM('m-cli');
+  ['ncn','nct','nce','ncp'].forEach(i=>document.getElementById(i).value='');
+  renderCli();renderDash();toast('✅ Cliente registrado');
+}
+
+/* ═══════════════════════════════════════════
+   CHAT WEB
+═══════════════════════════════════════════ */
+function initChat(){chatMsg('b','¡Hola! Soy el asistente de Claudia Bernal Inmobiliaria 🏠 ¿En qué puedo ayudarte hoy?');}
+function toggleChat(){CHATOPEN=!CHATOPEN;document.getElementById('cwin').classList.toggle('open',CHATOPEN);if(CHATOPEN)document.getElementById('cwi').focus();}
+function chatMsg(r,t){
+  const msgs=document.getElementById('cwm');
+  const now=new Date(),ft=`${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+  const d=document.createElement('div');d.className=`cm ${r}`;
+  d.innerHTML=`<div class="cmb">${t}</div><div class="cmt">${r==='b'?'Bot':'Tú'} · ${ft}</div>`;
+  msgs.appendChild(d);msgs.scrollTop=9999;
+}
+async function chatSend(){
+  const inp=document.getElementById('cwi'),txt=inp.value.trim();if(!txt)return;
+  inp.value='';chatMsg('u',txt);
+  const msgs=document.getElementById('cwm');
+  const ty=document.createElement('div');ty.className='cm b';
+  ty.innerHTML='<div class="cmb" style="display:flex;gap:3px;align-items:center;padding:10px 12px"><span class="typing"><span></span><span></span><span></span></span></div>';
+  msgs.appendChild(ty);msgs.scrollTop=9999;
+  await new Promise(r=>setTimeout(r,1100));
+  ty.remove();chatMsg('b',botResp(txt));
+}
+function botResp(m){
+  m=m.toLowerCase();
+  if(m.includes('precio')||m.includes('costo'))return'Los precios van desde $850,000 MXN en terrenos hasta $2,450,000 MXN en casas residenciales. ¿Tienes un presupuesto en mente?';
+  if(m.includes('visita')||m.includes('ver'))return'Con mucho gusto agendamos tu visita. Escríbenos al WhatsApp 477 123 4567 o dinos tu nombre y teléfono aquí.';
+  if(m.includes('recámara')||m.includes('cuarto'))return'Contamos con casas de 3 y 4 recámaras. ¿Cuántas habitaciones necesitas?';
+  if(m.includes('renta')||m.includes('rentar'))return'Tenemos casas en renta desde $9,500/mes. ¿En qué zona de León buscas?';
+  if(m.includes('venta')||m.includes('comprar'))return'Contamos con casas en venta desde $1,350,000 MXN. ¿Cuál es tu presupuesto aproximado?';
+  if(m.includes('terreno'))return'Tenemos lotes residenciales desde $850,000 MXN en Zona Sur. ¿Le interesa más información?';
+  if(m.includes('hola')||m.includes('buenos'))return'¡Hola! Con mucho gusto te ayudo. ¿Buscas comprar, rentar o invertir en León?';
+  return'Gracias por contactarnos. Un asesor te responderá muy pronto. También puedes llamar directamente al 477 123 4567.';
+}
+
+/* ═══════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════ */
+function fp(p,r=false){
+  if(!p)return'—';
+  const s=r?' /mes':'';
+  if(p>=1000000)return`$${(p/1000000).toFixed(p%1000000===0?0:1)}M MXN${s}`;
+  return`$${p.toLocaleString('es-MX')} MXN${s}`;
+}
+function fmtF(f){
+  if(!f)return'—';
+  try{return new Date(f).toLocaleDateString('es-MX',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});}catch(e){return f;}
+}
+function toast(msg,dur=3000){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(window._t);window._t=setTimeout(()=>t.classList.remove('show'),dur);
+}
+</script>
+</body>
+</html>
